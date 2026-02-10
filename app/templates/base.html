@@ -3,17 +3,18 @@
     {% block head %}
         <title>{% block title %}{% endblock %} - My Application</title>
         <div class="topnav">
-            <a class="active" href="/">Dashboard</a>
+            <a class="active" href="/dashboard">Dashboard</a>
             <a href="/register">Register</a>
-            <a href="/about">About</a>
             <a href="/login">Login</a>
         </div>
     {% endblock %}
     </head>
     <body>
-             <p>-----------------------------------------------------</p>
-        {% block body %}
-       
-        {% endblock %}
-    </body>
+    <div id="content">{% block content %}Welcome to my Flask Application{% endblock %}</div>
+    <div id="footer">
+      {% block footer %}
+      &copy; Copyright 2010 by <a href="http://127.0.0.1:5000">you</a>.
+      {% endblock %}
+    </div>
+  </body>
 </html>
