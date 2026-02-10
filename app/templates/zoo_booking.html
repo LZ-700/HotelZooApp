@@ -1,0 +1,8 @@
+<h2>Zoo Ticket Booking</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.visit_date.label }} {{ form.visit_date() }}
+    {{ form.adults.label }} {{ form.adults() }}
+    {{ form.children.label }} {{ form.children() }}
+    {{ form.submit() }}
+</form>
