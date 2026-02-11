@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
-from flask_login import login_user, logout_user, login_required
-from app.models import User
+from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask_login import login_user, logout_user, login_required, current_user
+from app import db
+from app.models import User, ZooBooking, HotelBooking
 from app.forms import LoginForm, RegistrationForm, ZooBookingForm, HotelBookingForm
 
 bp = Blueprint('main', __name__) # App created later so that routes can be defined here without circular imports
