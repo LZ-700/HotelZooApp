@@ -10,31 +10,53 @@ bp = Blueprint('main', __name__) # App created later so that routes can be defin
 def index():
     return render_template('index.html')
 
+@bp.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('dashboard.html')
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
+
         if user and user.check_password(form.password.data):
             login_user(user)
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('main.dashboard'))  # blueprint prefix is main
+
         flash("Invalid email or password")
+
     return render_template('login.html', form=form)
+
+@bp.route('/logout')
+@login_required
+def logout():
+    logout_user()  # from flask_login
+    flash("You have been logged out.")
+    return redirect(url_for('main.index'))
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
+
     if form.validate_on_submit():
         user = User(
             email=form.email.data,
-            username=form.username.data,
-            password=form.password.data
+            username=form.username.data
         )
+
+        user.set_password(form.password.data)  # 🔥 THIS IS THE FIX
+
         db.session.add(user)
         db.session.commit()
+
         flash("Registration successful! You can now log in.")
-        return redirect(url_for('login'))
+        return redirect(url_for('main.login'))
+
     return render_template('register.html', form=form)
+
 
 @bp.route('/zoo-booking', methods=['GET', 'POST'])
 @login_required
@@ -49,7 +71,7 @@ def zoo_booking():
         )
         db.session.add(booking)
         db.session.commit()
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('main.dashboard'))
     return render_template('zoo_booking.html', form=form)
 
 @bp.route('/hotel-booking', methods=['GET', 'POST'])
@@ -65,5 +87,5 @@ def hotel_booking():
         )
         db.session.add(booking)
         db.session.commit()
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('main.dashboard'))
     return render_template('hotel_booking.html', form=form)
