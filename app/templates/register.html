@@ -6,7 +6,7 @@
     {{ super() }}
     {% endblock %}
 
-{% block body %}
+{% block content %}
     <h1>Register</h1>
 
     <form method="POST">
@@ -16,4 +16,5 @@
         {{ form.password.label }} {{ form.password() }}
         {{ form.submit() }}
     </form>
+    <p>Already have an account? <a href="/login">Login here</a></p>
 {% endblock %}
