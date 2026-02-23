@@ -33,11 +33,8 @@ class ZooBookingForm(FlaskForm):
 class HotelBookingForm(FlaskForm):
     check_in = DateField('Check-in Date', validators=[DataRequired()])
     check_out = DateField('Check-out Date', validators=[DataRequired()])
-    room_type = SelectField('Room Type', choices=[
-        ('standard', 'Standard'),
-        ('deluxe', 'Deluxe'),
-        ('suite', 'Suite')
-    ], validators=[DataRequired()])
+    num_guests = IntegerField('Number of Guests', validators=[DataRequired(), NumberRange(min=1)])
+    special_requests = StringField('Special Requests')
     submit = SubmitField('Book Room')
     def validate_check_out(self, check_out):
         if self.check_in.data and check_out.data <= self.check_in.data:

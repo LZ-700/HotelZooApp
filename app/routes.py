@@ -47,7 +47,7 @@ def register():
             username=form.username.data
         )
 
-        user.set_password(form.password.data)  # 🔥 THIS IS THE FIX
+        user.set_password(form.password.data)
 
         db.session.add(user)
         db.session.commit()
@@ -82,7 +82,8 @@ def hotel_booking():
         booking = HotelBooking(
             check_in=form.check_in.data,
             check_out=form.check_out.data,
-            room_type=form.room_type.data,
+            num_guests=form.num_guests.data,
+            special_requests=form.special_requests.data,
             user_id=current_user.id
         )
         db.session.add(booking)
