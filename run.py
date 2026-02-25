@@ -3,12 +3,9 @@ from app import db
 
 app = create_app()
 
-for rule in app.url_map.iter_rules():
-    print(rule)
-
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+    for rule in app.url_map.iter_rules():
+        print(rule)
     app.run(debug=True)
-
-print(db.engine.table_names())
-with app.app_context():
-    db.create_all()

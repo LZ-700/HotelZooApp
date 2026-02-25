@@ -1,6 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <h2>Dashboard</h2>
 <ul>
     <li><a href="{{ url_for('main.zoo_booking') }}">Book Zoo Tickets</a></li>
     <li><a href="{{ url_for('main.hotel_booking') }}">Book Hotel</a></li>
     <li><a href="{{ url_for('main.logout') }}">Logout</a></li>
 </ul>
+
+{% endblock %}

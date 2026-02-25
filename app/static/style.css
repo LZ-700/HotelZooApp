@@ -5,7 +5,7 @@ body {
 
 form {
     background: white;
-    padding: 20px;
+    padding: 20px; 
     width: 300px;
     margin: auto;
 } /* Basic styling for the form and body */

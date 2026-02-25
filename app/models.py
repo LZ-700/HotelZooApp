@@ -25,5 +25,6 @@ class HotelBooking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     check_in = db.Column(db.Date, nullable=False)
     check_out = db.Column(db.Date, nullable=False)
-    room_type = db.Column(db.String(50))
+    num_guests = db.Column(db.Integer, nullable=False)
+    special_requests = db.Column(db.String(200), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
