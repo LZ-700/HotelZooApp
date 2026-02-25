@@ -1,12 +1,16 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, DateField, SelectField
-from wtforms.validators import DataRequired, EqualTo, ValidationError, Email, Length, NumberRange
+from wtforms.validators import DataRequired, EqualTo, ValidationError, Email, Length, NumberRange, InputRequired
 from app.models import User
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if not user:
+            raise ValidationError('Email not registered.')
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -27,8 +31,21 @@ class RegistrationForm(FlaskForm):
 class ZooBookingForm(FlaskForm):
     visit_date = DateField('Visit Date', validators=[DataRequired()])
     adults = IntegerField('Adults', validators=[DataRequired(), NumberRange(min=0)])
-    children = IntegerField('Children', validators=[DataRequired(), NumberRange(min=0)])
+    children = IntegerField('Children', validators=[InputRequired(), NumberRange(min=0)])
     submit = SubmitField('Book Tickets')
+    def validate_visit_date(self, visit_date):
+        if visit_date.data < date.today():
+            raise ValidationError("Visit date cannot be in the past.")
+    def validate(self):
+        if not super().validate():
+            return False
+        if self.adults.data == 0 and self.children.data == 0:
+            self.adults.errors.append("At least one adult or child must be included in the booking.")
+            return False
+        return True
+    def validate_children(self, children):
+        if self.adults.data == 0 and children.data > 0:
+            raise ValidationError("Children cannot be booked without at least one adult.")
 
 class HotelBookingForm(FlaskForm):
     check_in = DateField('Check-in Date', validators=[DataRequired()])
