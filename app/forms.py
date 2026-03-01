@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from datetime import date
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, DateField, SelectField
 from wtforms.validators import DataRequired, EqualTo, ValidationError, Email, Length, NumberRange, InputRequired
 from app.models import User
@@ -7,10 +8,6 @@ class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if not user:
-            raise ValidationError('Email not registered.')
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -30,7 +27,7 @@ class RegistrationForm(FlaskForm):
 
 class ZooBookingForm(FlaskForm):
     visit_date = DateField('Visit Date', validators=[DataRequired()])
-    adults = IntegerField('Adults', validators=[DataRequired(), NumberRange(min=0)])
+    adults = IntegerField('Adults', validators=[InputRequired(), NumberRange(min=0)])
     children = IntegerField('Children', validators=[InputRequired(), NumberRange(min=0)])
     submit = SubmitField('Book Tickets')
     def validate_visit_date(self, visit_date):
