@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
     {% block head %}
@@ -9,11 +10,22 @@
     {% endblock %}
     </head>
     <body>
-    <div class="topnav"> <a href="/register">Register</a> <a href="/login">Login</a> </div>
+      {% if not current_user.is_authenticated %}
+        <div class="topnav"> <a href="{{ url_for('main.register') }}">Register</a> <a href="{{ url_for('main.login') }}">Login</a> </div>
+        {% else %}
+        <div class="topnav"> <a href="{{ url_for('main.dashboard') }}">Dashboard</a> <a href="{{ url_for('main.logout') }}">Logout</a> </div>
+      {% endif %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <div id="content">{% block content %}Welcome to my Flask Application{% endblock %}</div>
     <div id="footer">
       {% block footer %}
-      &copy; Copyright 2010 by <a href="http://127.0.0.1:5000">you</a>.
+      &copy; Copyright 2026 by <a href="http://127.0.0.1:5000">you</a>.
       {% endblock %}
     </div>
   </body>

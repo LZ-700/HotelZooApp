@@ -17,6 +17,9 @@ def dashboard():
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.dashboard'))
+
     form = LoginForm()
 
     if form.validate_on_submit():
@@ -39,6 +42,8 @@ def logout():
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.dashboard'))
     form = RegistrationForm()
 
     if form.validate_on_submit():
@@ -64,13 +69,14 @@ def zoo_booking():
     form = ZooBookingForm()
     if form.validate_on_submit():
         booking = ZooBooking(
-        visit_date=form.visit_date.data,
-        adults=form.adults.data,
-        children=form.children.data,
-        user_id=current_user.id
+            visit_date=form.visit_date.data,
+            adults=form.adults.data,
+            children=form.children.data,
+            user_id=current_user.id
         )
         db.session.add(booking)
         db.session.commit()
+        flash("Zoo booking confirmed!")
         return redirect(url_for('main.dashboard'))
     return render_template('zoo_booking.html', form=form)
 
@@ -88,5 +94,6 @@ def hotel_booking():
         )
         db.session.add(booking)
         db.session.commit()
+        flash("Hotel booking confirmed!")
         return redirect(url_for('main.dashboard'))
     return render_template('hotel_booking.html', form=form)

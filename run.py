@@ -1,3 +1,4 @@
+import os
 from app import create_app
 from app import db
 
@@ -8,4 +9,4 @@ if __name__ == "__main__":
         db.create_all()
     for rule in app.url_map.iter_rules():
         print(rule)
-    app.run(debug=True)
+    app.run(debug=os.environ.get('FLASK_DEBUG', '').lower() == 'true')

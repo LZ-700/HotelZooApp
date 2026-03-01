@@ -7,6 +7,8 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
     email = db.Column(db.String(120), unique=True, nullable=False)
+    zoo_bookings = db.relationship('ZooBooking', backref='user', lazy=True)
+    hotel_bookings = db.relationship('HotelBooking', backref='user', lazy=True)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

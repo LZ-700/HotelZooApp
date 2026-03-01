@@ -11,8 +11,17 @@
 <form method="POST">
     {{ form.hidden_tag() }}
     {{ form.visit_date.label }} {{ form.visit_date() }}
+    {% for error in form.visit_date.errors %}
+    <span style="color: red;">{{ error }}</span>
+    {% endfor %}
     {{ form.adults.label }} {{ form.adults() }}
     {{ form.children.label }} {{ form.children() }}
+    {% for error in form.adults.errors %}
+    <span style="color: red;">{{ error }}</span>
+    {% endfor %}
+    {% for error in form.children.errors %}
+    <span style="color: red;">{{ error }}</span>
+    {% endfor %}
     {{ form.submit() }}
 </form>
 {% endblock %}

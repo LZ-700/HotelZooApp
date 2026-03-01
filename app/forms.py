@@ -8,6 +8,14 @@ class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if not user:
+            raise ValidationError('No account found with that email.')
+    def validate_password(self, password):
+        user = User.query.filter_by(email=self.email.data).first()
+        if user and not user.check_password(password.data):
+            raise ValidationError('Incorrect password.')        
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -47,9 +55,15 @@ class ZooBookingForm(FlaskForm):
 class HotelBookingForm(FlaskForm):
     check_in = DateField('Check-in Date', validators=[DataRequired()])
     check_out = DateField('Check-out Date', validators=[DataRequired()])
-    num_guests = IntegerField('Number of Guests', validators=[DataRequired(), NumberRange(min=1)])
+    num_guests = IntegerField('Number of Guests', validators=[InputRequired(), NumberRange(min=1)])
     special_requests = StringField('Special Requests')
     submit = SubmitField('Book Room')
     def validate_check_out(self, check_out):
         if self.check_in.data and check_out.data <= self.check_in.data:
               raise ValidationError("Check-out date must be after check-in date.")
+    def validate_check_in(self, check_in):
+        if check_in.data < date.today():
+            raise ValidationError("Check-in date cannot be in the past.")
+    def num_guests(self, num_guests):
+        if num_guests.data < 1:
+            raise ValidationError("At least one guest must be included in the booking.")

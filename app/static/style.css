@@ -1,7 +1,9 @@
 body {
     font-family: Arial, sans-serif;
     background: #f4f4f4;
-}
+    margin: 0;
+    padding: 0;
+} /* Basic styling for the body */
 
 form {
     background: white;
@@ -9,3 +11,13 @@ form {
     width: 300px;
     margin: auto;
 } /* Basic styling for the form and body */
+
+.flash {
+    background: #fff3cd;
+    border: 1px solid #fdfdfd;
+    color: #ff0000;
+    padding: 10px;
+    margin: 10px auto;
+    width: 300px;
+    border-radius: 4px;
+} /* Styling for flash messages */

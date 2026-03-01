@@ -16,13 +16,11 @@ def create_app():
 
     @login.user_loader
     def load_user(id):
-        return User.query.get(int(id))
+        return  db.session.get(User, int(id))
 
     login.init_app(app)
 
     from app.routes import bp
     app.register_blueprint(bp)
-
-    from app import models  # make sure models are imported
 
     return app

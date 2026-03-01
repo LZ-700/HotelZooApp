@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Hotel Booking{% endblock %}
 
 {% block head %}
     {{ super() }}
@@ -12,8 +12,17 @@
     <form method="POST">
         {{ form.hidden_tag() }}
         {{ form.check_in.label }} {{ form.check_in() }}<br>
+        {% for error in form.check_in.errors %}
+            <span style="color: red;">{{ error }}</span><br>
+        {% endfor %}
         {{ form.check_out.label }} {{ form.check_out() }}<br>
+        {% for error in form.check_out.errors %}
+            <span style="color: red;">{{ error }}</span><br>
+        {% endfor %}
         {{ form.num_guests.label }} {{ form.num_guests() }}<br>
+        {% for error in form.num_guests.errors %}
+            <span style="color: red;">{{ error }}</span><br>
+        {% endfor %}
         {{ form.special_requests.label }} {{ form.special_requests() }}<br>
         {{ form.submit() }}
     </form>
